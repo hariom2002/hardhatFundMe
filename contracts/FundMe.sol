@@ -6,7 +6,7 @@ import "./PriceConverter.sol";
 
 error NotOwner();
 
-contract FundMe {
+contract FundMe { 
     using PriceConverter for uint256;
 
     mapping(address => uint256) public addressToAmountFunded;
@@ -17,13 +17,15 @@ contract FundMe {
     uint256 public constant MINIMUM_USD = 50 * 10 ** 18;
     
     AggregatorV3Interface public priceFeed;
+
     constructor(address priceFeedAddress) {
         i_owner = msg.sender;
         priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
     function fund() public payable {
-        require(msg.value.getConversionRate(priceFeed) >= MINIMUM_USD, "You need to spend more ETH!");
+        require(msg.value.getConversionRate(priceFeed) >= MINIMUM_USD,
+         "You need to spend more ETH!");
         // require(PriceConverter.getConversionRate(msg.value) >= MINIMUM_USD, "You need to spend more ETH!");
         addressToAmountFunded[msg.sender] += msg.value;
         funders.push(msg.sender);
